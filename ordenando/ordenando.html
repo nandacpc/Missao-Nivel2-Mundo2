@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="ordenando.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Ordenando Valores</h1>
+    <label for="valor">Valor</label><br>
+    <input type="text" id="valor" name="valor"><br>
+    <button type="submit" onclick="add()">Adicionar</button>
+    <hr>
+    <select>
+        <option value="bubble" selected>Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+    </select><br>
+    <input type="button" value="Ordenar" onclick="ordenar()">
+    <input type="button" value="Misturar" onclick="misturar()">
+    <hr>
+    <ul id="valores"></ul>
+</body>
+
+<script>
+    let ul = document.getElementById("valores");
+
+    function add() {
+        let li = document.createElement("li"); //a variável que deveria se chamar node, mas dá erro no código
+        let entrada = document.getElementById("valor").value;
+        let node = document.createTextNode(entrada); //variável que eu chamei de node em homenagem à primeira
+    	li.appendChild(node);
+	    ul.appendChild(li);
+    };
+    function ordenar(){
+        let elementos = ul.children;
+        let lista = Array.from(elementos).map(li => eval(li.innerHTML));
+        let selecao = document.querySelector("select").value;
+        let listaOrdenada;
+        if(selecao === "bubble"){
+            listaOrdenada = bubble_sort(lista);
+        } else if(selecao === "selection"){
+            listaOrdenada = selection_sort(lista);
+        } else if(selecao === "quick"){
+            listaOrdenada = quick_sort(lista, 0, lista.length - 1);
+        }
+        let listaFinal = lista.reduce((item, valor) => {
+            return item + `<li>${valor}</li>`;
+        },'');   
+        ul.innerHTML = listaFinal; 
+    };
+    function misturar() {
+        let elementos = ul.children;
+        let lista = Array.from(elementos, (li) => eval(li.innerHTML)); //usei uma arrow function como .map()
+        let listaLeng = lista.length;        
+        shuffle(lista,listaLeng);
+        let listaFinal = lista.reduce((item, valor) => {
+            return item + `<li>${valor}</li>`;
+        },'');   
+        ul.innerHTML = listaFinal;        
+    }
+</script>
+</html>
